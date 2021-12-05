@@ -1,8 +1,8 @@
 package assimp
 
 /*
-#cgo CFLAGS: -I${SRCDIR}/assimplib/include -std=c99
-#cgo LDFLAGS: -L${SRCDIR}/assimplib/bin/macos -lassimp -lstdc++
+#cgo CFLAGS: -I/usr/local/lib/assimp/include -std=c99
+#cgo LDFLAGS: -L/usr/local/lib/assimp/bin -lassimp -lstdc++
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -12,6 +12,7 @@ package assimp
 #include <assimp/cexport.h>
 #include <assimp/scene.h>
 #include <assimp/material.h>
+#include <assimp/metadata.h>
 #include <assimp/postprocess.h>
 #include <assimp/types.h>
 
@@ -63,6 +64,8 @@ func Export(path, outPath, format string) (err error) {
 		err = fmt.Errorf("Failed to import %s", path)
 		return
 	}
+	// get UnitScaleFactor
+	// get UnitScaleFactor form mMetaData
 	aiReturn := C.aiExportScene(scene, C.CString(format), C.CString(outPath), C.aiProcess_ValidateDataStructure)
 	if aiReturn != C.aiReturn_SUCCESS {
 		err = fmt.Errorf("Failed to export %s", path)
