@@ -3,3 +3,7 @@ compiler/compiler
 compiler/*.dll
 *.exe
 *.dll
+.vscode/settings.json
+.gitignore
+assimp/assimplib/*
+.DS_Store
