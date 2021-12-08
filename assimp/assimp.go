@@ -12,13 +12,20 @@ package assimp
 #include <assimp/cexport.h>
 #include <assimp/scene.h>
 #include <assimp/material.h>
+#include <assimp/texture.h>
 #include <assimp/metadata.h>
+#include <assimp/commonMetaData.h>
 #include <assimp/postprocess.h>
 #include <assimp/types.h>
 
 struct aiMesh* mesh_at(struct aiScene* s, unsigned int index)
 {
 	return s->mMeshes[index];
+}
+
+struct aiMaterial* material_at(struct aiScene* s, unsigned int index)
+{
+	return s->mMaterials[index];
 }
 */
 import "C"
@@ -48,6 +55,34 @@ func Import(path string) (scene *C.struct_aiScene, err error) {
 	if scene.mNumMeshes < 1 {
 		return nil, fmt.Errorf("%s no meshes were found", path)
 	}
+	// 获取贴图列表
+	fmt.Println(scene.mNumMaterials)
+	// get Materials from scene
+	for i := 0; i < int(scene.mNumMaterials); i++ {
+		mat := C.material_at(scene, C.uint(i))
+		if mat == nil {
+			continue
+		}
+		// get material name
+		var name *C.struct_aiString
+		fmt.Println(name)
+		// aiReturn := C.aiGetMaterialString(mat, C.AI_MATKEY_NAME, 0, 0, &name)
+		// fmt.Println(name, aiReturn)
+		// var texFile *C.struct_aiMaterialProperty
+		// aiReturn := C.aiGetMaterialProperty(mat, C.CString("$tex.file"), C.aiTextureType_DIFFUSE, 0, &texFile)
+		// if aiReturn == C.aiReturn_SUCCESS {
+		// 	fmt.Println(texFile)
+		// } else {
+		// 	fmt.Println("no texture")
+		// }
+		// defer C.free(unsafe.Pointer(texFile))
+		// get diffuse texture
+		// tex := C.aiGetMaterialString(mat, C.aiTextureType_DIFFUSE)
+		// if tex == nil {
+		// 	continue
+		// }
+		// fmt.Println(tex.mHeight, tex.mWidth, tex.mFilename)
+	}
 	return
 }
 
@@ -64,8 +99,6 @@ func Export(path, outPath, format string) (err error) {
 		err = fmt.Errorf("Failed to import %s", path)
 		return
 	}
-	// get UnitScaleFactor
-	// get UnitScaleFactor form mMetaData
 	aiReturn := C.aiExportScene(scene, C.CString(format), C.CString(outPath), C.aiProcess_ValidateDataStructure)
 	if aiReturn != C.aiReturn_SUCCESS {
 		err = fmt.Errorf("Failed to export %s", path)

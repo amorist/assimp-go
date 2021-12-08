@@ -7,3 +7,4 @@ compiler/*.dll
 .gitignore
 assimp/assimplib/*
 .DS_Store
+obj-converter

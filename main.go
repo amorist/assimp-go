@@ -56,6 +56,28 @@ func main() {
 					return nil
 				},
 			},
+			{
+				Name:    "import",
+				Aliases: []string{"im"},
+				Usage:   "import",
+				Flags: []cli.Flag{
+					&cli.StringFlag{
+						Name:        "input",
+						Aliases:     []string{"i"},
+						Value:       "",
+						Usage:       "input file",
+						Destination: &input,
+						Required:    true,
+					},
+				},
+				Action: func(c *cli.Context) error {
+					_, err := assimp.Import(input)
+					if err != nil {
+						log.Fatal(err)
+					}
+					return nil
+				},
+			},
 		},
 	}
 	sort.Sort(cli.FlagsByName(app.Flags))
