@@ -64,8 +64,8 @@ func Import(path string) (scene *C.struct_aiScene, err error) {
 			continue
 		}
 		// get material name
-		var name *C.struct_aiString
-		fmt.Println(name)
+		// var name *C.struct_aiString
+		// fmt.Println(name)
 		// aiReturn := C.aiGetMaterialString(mat, C.AI_MATKEY_NAME, 0, 0, &name)
 		// fmt.Println(name, aiReturn)
 		// var texFile *C.struct_aiMaterialProperty
